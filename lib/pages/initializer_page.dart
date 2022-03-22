@@ -1,5 +1,5 @@
-import 'package:firebase_reader/infra/google_services_parser.dart';
-import 'package:firebase_reader/pages/home_page.dart';
+import '../infra/google_services_parser.dart';
+import '../pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
