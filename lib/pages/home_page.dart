@@ -25,17 +25,17 @@ class _MyHomePageState extends State<MyHomePage> {
     final snap = await _ref.get();
     final Map lol = snap.value! as Map;
 
-    lol.forEach((comodo, sensores) {
-      var sensorMap = {comodo: {}};
+    lol.forEach((grupo, sensores) {
+      var sensorMap = {grupo: {}};
 
       (sensores as Map).forEach((sensor, valor) {
-        sensorMap[comodo]![sensor] = valor as double;
+        sensorMap[grupo]![sensor] = valor as int;
         _sensores.addAll(sensorMap);
 
-        _ref.child("$comodo/$sensor").onValue.listen((event) {
+        _ref.child("$grupo/$sensor").onValue.listen((event) {
           var newValor = event.snapshot.value;
           if (newValor == null) return;
-          setState(() => _sensores[comodo][sensor] = newValor as double);
+          setState(() => _sensores[grupo][sensor] = newValor as int);
         });
       });
     });
@@ -50,11 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
         itemCount: _sensores.length,
         itemBuilder: (BuildContext context, int index) {
-          final comodo = _sensores.entries.toList().elementAt(index);
-          final sensores = (comodo.value as Map).entries.toList();
+          final grupo = _sensores.entries.toList().elementAt(index);
+          final sensores = (grupo.value as Map).entries.toList();
           return ListTile(
             contentPadding: const EdgeInsets.all(16.0),
-            leading: Text("${comodo.key}:"),
+            leading: Text("${grupo.key}:"),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: List.generate(
