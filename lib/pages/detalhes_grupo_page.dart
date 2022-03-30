@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/sensor.dart';
 import '../stores/detalhes_grupo.dart';
 
 class DetalhesGrupoPage extends StatefulWidget {
@@ -46,28 +47,52 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
               child: ListView.builder(
                 itemCount: sensores.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var grupo = sensores.entries.elementAt(index);
-                  var _sensoresColumn = Column(
-                    children: List.generate(grupo.value.length, (index) {
-                      var sensor = grupo.value.entries.elementAt(index);
-                      return Row(
+                  final grupo = sensores.entries.elementAt(index);
+                  final grupoElem = grupo.value.entries;
+                  int cnt = (grupoElem.length / 2).round();
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 8.0),
+                      child: Column(
                         children: [
-                          Text(sensor.key),
-                          const SizedBox(
-                            width: 25.0,
+                          cardTitle(grupo.key.toString(), context),
+                          Column(
+                            children: List.generate(cnt, (index) {
+                              var sensorE = grupoElem.elementAt(index);
+                              var sensorD = grupoElem.elementAt(cnt + index);
+                              return Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SensorDisplay(
+                                    sensor: sensorE.key,
+                                    valor: sensorE.value,
+                                  ),
+                                  SensorDisplay(
+                                    sensor: sensorD.key,
+                                    valor: sensorD.value,
+                                  ),
+                                ],
+                              );
+                            }),
                           ),
-                          Text(sensor.value.toString()),
                         ],
-                      );
-                    }),
-                  );
-                  return ListTile(
-                    leading: Text(grupo.key.toString()),
-                    title: _sensoresColumn,
+                      ),
+                    ),
                   );
                 },
               ),
             ),
+    );
+  }
+
+  Container cardTitle(String grupo, BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints.expand(height: 45.0),
+      child: Text(
+        grupo,
+        style: Theme.of(context).textTheme.headline4,
+      ),
     );
   }
 }
