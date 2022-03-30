@@ -49,7 +49,35 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
                 itemBuilder: (BuildContext context, int index) {
                   final grupo = sensores.entries.elementAt(index);
                   final grupoElem = grupo.value.entries;
-                  int cnt = (grupoElem.length / 2).round();
+                  int cnt = (grupoElem.length / 2).floor();
+                  var grid = List.generate(cnt, (index) {
+                    var sensorE = grupoElem.elementAt(index);
+                    var sensorD = grupoElem.elementAt(cnt + index);
+                    return Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SensorDisplay(
+                          sensor: sensorE.key,
+                          valor: sensorE.value,
+                        ),
+                        SensorDisplay(
+                          sensor: sensorD.key,
+                          valor: sensorD.value,
+                        ),
+                      ],
+                    );
+                  });
+                  final remainder = grupoElem.length.remainder(2);
+                  if (remainder > 0) {
+                    final _sensor = grupoElem.last;
+                    grid.add(Row(
+                      children: [
+                        SensorDisplay(
+                            sensor: _sensor.key, valor: _sensor.value),
+                      ],
+                    ));
+                  }
                   return Card(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 8.0),
@@ -57,24 +85,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
                         children: [
                           cardTitle(grupo.key.toString(), context),
                           Column(
-                            children: List.generate(cnt, (index) {
-                              var sensorE = grupoElem.elementAt(index);
-                              var sensorD = grupoElem.elementAt(cnt + index);
-                              return Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SensorDisplay(
-                                    sensor: sensorE.key,
-                                    valor: sensorE.value,
-                                  ),
-                                  SensorDisplay(
-                                    sensor: sensorD.key,
-                                    valor: sensorD.value,
-                                  ),
-                                ],
-                              );
-                            }),
+                            children: grid,
                           ),
                         ],
                       ),
