@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/sensor.dart';
+import 'package:projetoeolico/widgets/sensor_grid.dart';
 import '../stores/detalhes_grupo.dart';
 
 class DetalhesGrupoPage extends StatefulWidget {
@@ -35,74 +35,44 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Todos'),
-      ),
       body: (sensores.isEmpty)
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemCount: sensores.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final grupo = sensores.entries.elementAt(index);
-                  final grupoElem = grupo.value.entries;
-                  int cnt = (grupoElem.length / 2).floor();
-                  var grid = List.generate(cnt, (index) {
-                    var sensorE = grupoElem.elementAt(index);
-                    var sensorD = grupoElem.elementAt(cnt + index);
-                    return Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SensorDisplay(
-                          sensor: sensorE.key,
-                          valor: sensorE.value,
-                        ),
-                        SensorDisplay(
-                          sensor: sensorD.key,
-                          valor: sensorD.value,
-                        ),
-                      ],
-                    );
-                  });
-                  final remainder = grupoElem.length.remainder(2);
-                  if (remainder > 0) {
-                    final _sensor = grupoElem.last;
-                    grid.add(Row(
-                      children: [
-                        SensorDisplay(
-                            sensor: _sensor.key, valor: _sensor.value),
-                      ],
-                    ));
-                  }
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 8.0),
-                      child: Column(
-                        children: [
-                          cardTitle(grupo.key.toString(), context),
-                          Column(
-                            children: grid,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+          ? const Center(child: CircularProgressIndicator())
+          : _main(),
     );
   }
 
   Container cardTitle(String grupo, BuildContext context) {
     return Container(
-      constraints: const BoxConstraints.expand(height: 45.0),
+      padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
       child: Text(
         grupo,
         style: Theme.of(context).textTheme.headline4,
+      ),
+    );
+  }
+
+  _main() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: sensores.length,
+              itemBuilder: (BuildContext context, int index) {
+                final grupo = sensores.entries.elementAt(index);
+                final grupoElem = grupo.value.entries.toList();
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    cardTitle(grupo.key.toString(), context),
+                    SensorGrid(sensores: grupoElem),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
