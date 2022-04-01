@@ -19,10 +19,10 @@ class SensorDisplay extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              sensor,
-              style: Theme.of(context).textTheme.labelLarge,
+              valor.toString(),
+              style: Theme.of(context).textTheme.headline5,
             ),
-            Text(valor.toString()),
+            Text(sensor),
           ],
         ),
       ),

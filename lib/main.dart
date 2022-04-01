@@ -15,6 +15,18 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Inter',
+        textTheme: const TextTheme(
+          headline4: TextStyle(color: Colors.black),
+          headline5: TextStyle(color: Colors.black),
+        ),
+        cardTheme: CardTheme(
+          elevation: 5,
+          margin: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
       home: const Initialize(),
     );

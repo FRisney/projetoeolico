@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetoeolico/widgets/date_display.dart';
 import 'package:projetoeolico/widgets/sensor_grid.dart';
 import '../stores/detalhes_grupo.dart';
 
@@ -43,19 +44,21 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
 
   Container cardTitle(String grupo, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
       child: Text(
-        grupo,
+        grupo.toUpperCase(),
         style: Theme.of(context).textTheme.headline4,
       ),
     );
   }
 
   _main() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.only(top: 32.0),
       child: Column(
         children: [
+          const DateDisplay(),
           Expanded(
             child: ListView.builder(
               itemCount: sensores.length,

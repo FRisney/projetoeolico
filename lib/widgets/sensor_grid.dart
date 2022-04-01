@@ -18,14 +18,8 @@ class SensorGrid extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SensorDisplay(
-            sensor: sensorE.key,
-            valor: sensorE.value,
-          ),
-          SensorDisplay(
-            sensor: sensorD.key,
-            valor: sensorD.value,
-          ),
+          SensorDisplay(sensor: sensorE.key, valor: sensorE.value),
+          SensorDisplay(sensor: sensorD.key, valor: sensorD.value),
         ],
       );
     });
