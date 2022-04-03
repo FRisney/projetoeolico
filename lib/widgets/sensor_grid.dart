@@ -5,33 +5,29 @@ import 'sensor.dart';
 class SensorGrid extends StatelessWidget {
   const SensorGrid({
     Key? key,
-    required this.sensores,
+    required this.grupo,
   }) : super(key: key);
-  final List sensores;
+  final MapEntry grupo;
+  final int colCount = 2;
   @override
   Widget build(BuildContext context) {
-    int cnt = (sensores.length / 2).floor();
-    var grid = List.generate(cnt, (index) {
-      var sensorE = sensores.elementAt(index);
-      var sensorD = sensores.elementAt(cnt + index);
+    final List sensores = grupo.value.entries.toList();
+    int cnt = (sensores.length / colCount).ceil();
+    List<Widget> grid = List.generate(cnt, (index) {
+      var rowItems = sensores.skip(colCount * index).take(colCount);
       return Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SensorDisplay(sensor: sensorE.key, valor: sensorE.value),
-          SensorDisplay(sensor: sensorD.key, valor: sensorD.value),
-        ],
+        children: List<Widget>.generate(rowItems.length, (index) {
+          var sensor = rowItems.elementAt(index);
+          return SensorDisplay(
+            grupo: grupo.key,
+            sensor: sensor.key,
+            initialValue: sensor.value,
+          );
+        }),
       );
     });
-    if (sensores.length.remainder(2) > 0) {
-      final _sensor = sensores.last;
-      grid.add(Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SensorDisplay(sensor: _sensor.key, valor: _sensor.value),
-        ],
-      ));
-    }
     return Column(
       children: grid,
     );
