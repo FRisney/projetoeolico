@@ -50,26 +50,30 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
 
   _main() {
     return Container(
-      padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.only(top: 32.0),
-      child: Column(
+      child: Stack(
         children: [
-          const DateDisplay(),
-          Expanded(
-            child: ListView.builder(
-              itemCount: sensores.length,
-              itemBuilder: (BuildContext context, int index) {
-                final grupo = sensores.entries.elementAt(index);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _titleCard(grupo.key.toString(), context),
-                    SensorGrid(grupo: grupo),
-                  ],
-                );
-              },
-            ),
+          Column(
+            children: [
+              const SizedBox(height: 35),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: sensores.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final grupo = sensores.entries.elementAt(index);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _titleCard(grupo.key.toString(), context),
+                        SensorGrid(grupo: grupo),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
+          const DateDisplay(),
         ],
       ),
     );

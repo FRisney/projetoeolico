@@ -22,7 +22,7 @@ class _DateDisplayState extends State<DateDisplay> {
       }),
     );
     return Card(
-      margin: EdgeInsets.zero,
+      margin: const EdgeInsets.all(8.0),
       elevation: 8,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
