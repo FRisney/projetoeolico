@@ -20,17 +20,13 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
 
   @override
   void initState() {
-    bindSensors(widget.child, _onValueUpdated).then((value) {
+    getSensors(widget.child).then((value) {
       if (value == null) return;
-      sensores = value;
+      setState(() {
+        sensores = value;
+      });
     });
     super.initState();
-  }
-
-  void _onValueUpdated(grupo, sensor, newValue) {
-    setState(() {
-      sensores[grupo]![sensor] = newValue;
-    });
   }
 
   @override
@@ -42,7 +38,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
     );
   }
 
-  Container cardTitle(String grupo, BuildContext context) {
+  Container _titleCard(String grupo, BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
       child: Text(
@@ -64,12 +60,11 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
               itemCount: sensores.length,
               itemBuilder: (BuildContext context, int index) {
                 final grupo = sensores.entries.elementAt(index);
-                final grupoElem = grupo.value.entries.toList();
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    cardTitle(grupo.key.toString(), context),
-                    SensorGrid(sensores: grupoElem),
+                    _titleCard(grupo.key.toString(), context),
+                    SensorGrid(grupo: grupo),
                   ],
                 );
               },
