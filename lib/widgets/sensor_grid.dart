@@ -20,10 +20,14 @@ class SensorGrid extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: List<Widget>.generate(rowItems.length, (index) {
           var sensor = rowItems.elementAt(index);
+          var sensorValue = sensor.value;
           return SensorDisplay(
             grupo: grupo.key,
             sensor: sensor.key,
-            initialValue: sensor.value,
+            initialValue: sensorValue['Valor'],
+            unit: sensorValue['Unidade'],
+            max: sensorValue['Max'],
+            min: sensorValue['Min'],
           );
         }),
       );

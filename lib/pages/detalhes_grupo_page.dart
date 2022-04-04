@@ -43,7 +43,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
       padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
       child: Text(
         grupo.toUpperCase(),
-        style: Theme.of(context).textTheme.headline4,
+        style: Theme.of(context).textTheme.headlineLarge,
       ),
     );
   }

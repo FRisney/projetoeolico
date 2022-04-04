@@ -12,10 +12,17 @@ class DateDisplay extends StatefulWidget {
 
 class _DateDisplayState extends State<DateDisplay> {
   late DateTime date = DateTime.now();
+  late Timer _timer;
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _tema = Theme.of(context).textTheme.titleLarge;
-    Timer.periodic(
+    _timer = Timer.periodic(
       const Duration(seconds: 5),
       (timer) => setState(() {
         date = DateTime.now();

@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 import 'package:firebase_database/firebase_database.dart';
 
 typedef OnValueUpdated = Function(String sensorPath, dynamic newValue);
+typedef OnSensorMapUpdated = Function(String sensorPath, Map newValue);
 
 Future<Map?> getSensors(String from) async {
   final _ref = FirebaseDatabase.instance.ref(from);
@@ -11,8 +12,8 @@ Future<Map?> getSensors(String from) async {
   return rootValue;
 }
 
-Future<void> bindSensor(
-    String sensorPath, OnValueUpdated onValueUpdated) async {
+Future<void> bindSensor(String sensorPath,
+    {required OnValueUpdated onValueUpdated}) async {
   final _ref = FirebaseDatabase.instance.ref();
   final ref = _ref.child(sensorPath);
   ref.onValue.listen((event) {

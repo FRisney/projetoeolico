@@ -14,11 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
         fontFamily: 'Inter',
         textTheme: const TextTheme(
-          headline4: TextStyle(color: Colors.black),
-          headline5: TextStyle(color: Colors.black),
+          titleLarge: TextStyle(color: Colors.black),
+          headlineLarge: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: Colors.black),
         ),
         cardTheme: CardTheme(
           elevation: 5,
