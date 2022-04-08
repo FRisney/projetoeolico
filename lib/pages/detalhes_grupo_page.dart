@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:projetoeolico/widgets/date_display.dart';
 import 'package:projetoeolico/widgets/sensor_grid.dart';
@@ -17,9 +19,17 @@ class DetalhesGrupoPage extends StatefulWidget {
 
 class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
   Map sensores = {};
+  var date = DateTime.now();
+  late Timer _timer;
 
   @override
   void initState() {
+    if (mounted) {
+      _timer = Timer.periodic(
+        const Duration(seconds: 5),
+        updateOnTimer,
+      );
+    }
     getSensors(widget.child).then((value) {
       if (value == null) return;
       setState(() {
@@ -27,6 +37,16 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
       });
     });
     super.initState();
+  }
+
+  void updateOnTimer(Timer timer) {
+    setState(() => date = DateTime.now());
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -73,7 +93,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
               ),
             ],
           ),
-          const DateDisplay(),
+          DateDisplay(date: date),
         ],
       ),
     );
