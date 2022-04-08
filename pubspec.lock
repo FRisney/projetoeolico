@@ -141,7 +141,7 @@ packages:
       path: "../gauge_display"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   get_it:
     dependency: "direct main"
     description:

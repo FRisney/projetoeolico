@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:projetoeolico/widgets/date_display.dart';
-import 'package:projetoeolico/widgets/sensor_grid.dart';
 import '../stores/detalhes_grupo.dart';
+import '../widgets/date_display.dart';
+import '../widgets/custom_grid.dart';
+import '../widgets/sensor.dart';
 
 class DetalhesGrupoPage extends StatefulWidget {
   const DetalhesGrupoPage({
@@ -85,7 +86,21 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         _titleCard(grupo.key.toString(), context),
-                        SensorGrid(grupo: grupo),
+                        CustomGrid(
+                          grupo: grupo,
+                          items: grupo.value.entries.toList(),
+                          itemBuilder: (_, sensor) {
+                            final sensorValue = sensor.value;
+                            return SensorDisplay(
+                              grupo: grupo.key,
+                              sensor: sensor.key,
+                              initialValue: sensorValue['Valor'],
+                              unit: sensorValue['Unidade'],
+                              max: sensorValue['Max'],
+                              min: sensorValue['Min'],
+                            );
+                          },
+                        ),
                       ],
                     );
                   },

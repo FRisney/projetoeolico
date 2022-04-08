@@ -65,6 +65,7 @@ class _SensorDisplayState extends State<SensorDisplay> {
         min: widget.min,
         max: widget.max,
         unit: widget.unit,
+        fillColor: Colors.grey.shade700,
       );
     }
     throw Exception('tipo nao suportado');
