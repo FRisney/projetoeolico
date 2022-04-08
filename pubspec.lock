@@ -135,6 +135,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  gauge_display:
+    dependency: "direct main"
+    description:
+      path: "../gauge_display"
+      relative: true
+    source: path
+    version: "0.0.1"
   get_it:
     dependency: "direct main"
     description:

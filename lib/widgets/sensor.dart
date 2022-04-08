@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'gauge_painter.dart';
+import 'package:gauge_display/gauge_display.dart';
 import '../stores/detalhes_grupo.dart';
 
 class SensorDisplay extends StatefulWidget {
@@ -60,27 +60,11 @@ class _SensorDisplayState extends State<SensorDisplay> {
         ),
       );
     } else if (updatedValue is num) {
-      double _percentage =
-          updatedValue / ((widget.max ?? 100) - (widget.min ?? 0));
-      if (_percentage > 1.0) _percentage = 1.0;
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: const Size.fromHeight(60),
-            painter: GaugePainter(
-              percentage: _percentage,
-              fillColor: Colors.grey.shade700,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 35),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: _text(context),
-            ),
-          ),
-        ],
+      return GaugeDisplay(
+        updatedValue: updatedValue,
+        min: widget.min,
+        max: widget.max,
+        unit: widget.unit,
       );
     }
     throw Exception('tipo nao suportado');
@@ -103,27 +87,5 @@ class _SensorDisplayState extends State<SensorDisplay> {
         ),
       ),
     );
-  }
-
-  _text(context) {
-    if (widget.unit == null) {
-      return TextSpan(
-        text: updatedValue.toString(),
-        style: Theme.of(context).textTheme.titleLarge,
-      );
-    } else {
-      return TextSpan(
-        children: <InlineSpan>[
-          TextSpan(
-            text: updatedValue.toString(),
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          TextSpan(
-            text: '\n${widget.unit}',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      );
-    }
   }
 }
