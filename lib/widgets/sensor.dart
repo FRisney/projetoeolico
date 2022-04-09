@@ -37,39 +37,45 @@ class _SensorDisplayState extends State<SensorDisplay> {
     super.initState();
   }
 
-  void _onValueUpdated(_, newValue) {
-    setState(() {
-      updatedValue = newValue['Valor'];
-    });
+  void _onValueUpdated(_, nv) => setState(() => updatedValue = nv['Valor']);
+
+  trataSensor() {
+    if (updatedValue is String) {
+      return _text();
+    } else if (widget.sensor == 'Potencia AC') {
+      return _void();
+    } else if (updatedValue is num) {
+      return _gauge();
+    }
+    throw Exception('tipo nao suportado');
   }
 
-  _valueDisplay() {
-    if (updatedValue is String) {
-      return Card(
-        color:
-            updatedValue.toUpperCase() == 'NORMAL' ? Colors.green : Colors.red,
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            updatedValue,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
+  _text() => Text(
+        updatedValue,
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
       );
-    } else if (updatedValue is num) {
-      return GaugeDisplay(
+
+  _void() => GaugeDisplay(
+        updatedValue: updatedValue,
+        min: widget.min,
+        max: widget.max,
+        unit: widget.unit,
+        fillColor: Colors.black.withOpacity(0.0),
+        pointerColor: Colors.black.withOpacity(0.0),
+        bgOpacity: 0.0,
+        shadowOpacity: 0.0,
+      );
+
+  _gauge() => GaugeDisplay(
         updatedValue: updatedValue,
         min: widget.min,
         max: widget.max,
         unit: widget.unit,
         fillColor: Colors.grey.shade700,
       );
-    }
-    throw Exception('tipo nao suportado');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +87,7 @@ class _SensorDisplayState extends State<SensorDisplay> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _valueDisplay(),
+            trataSensor(),
             const SizedBox(height: 14),
             Text(widget.sensor),
           ],
