@@ -16,12 +16,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
         fontFamily: 'Inter',
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(color: Colors.black),
-          headlineLarge: TextStyle(color: Colors.black),
-          bodyMedium: TextStyle(color: Colors.black),
+        textTheme: TextTheme(
+          titleLarge: const TextStyle(color: Colors.black),
+          headlineLarge: const TextStyle(color: Colors.white),
+          headlineSmall: const TextStyle(color: Colors.white),
+          bodyLarge: const TextStyle(color: Colors.black),
+          bodyMedium: const TextStyle(color: Colors.black),
+          bodySmall: TextStyle(color: Colors.black.withOpacity(0.8)),
         ),
+        scaffoldBackgroundColor: const Color(0xFF4169E1),
         cardTheme: CardTheme(
+          color: const Color(0xFF00BFFF),
           elevation: 5,
           margin: const EdgeInsets.all(12),
           shape: RoundedRectangleBorder(

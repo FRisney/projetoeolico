@@ -74,23 +74,17 @@ class _SensorDisplayState extends State<SensorDisplay> {
         )),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 14),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(
-                    text: updatedValue.toString(),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  TextSpan(
-                    text: '\n${widget.unit}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
+            GaugeDisplay(
+              updatedValue: updatedValue,
+              min: 0,
+              max: 0,
+              fillColor: Colors.white.withOpacity(0),
+              pointerColor: Colors.white.withOpacity(0),
+              bgOpacity: 0,
+              shadowOpacity: 0,
+              useWidth: false,
             ),
             const SizedBox(height: 14),
             Text(
@@ -115,7 +109,9 @@ class _SensorDisplayState extends State<SensorDisplay> {
               min: _min,
               max: _max,
               unit: _unit,
-              fillColor: Colors.grey.shade700,
+              fillColor: Colors.black,
+              pointerColor: Colors.black,
+              pointerInset: 10,
               useWidth: false,
             ),
             const SizedBox(height: 14),
