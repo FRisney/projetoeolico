@@ -20,8 +20,9 @@ class CustomGrid extends StatelessWidget {
     List<Widget> grid = List.generate(cnt, (index) {
       var rowItems = items.skip(colCount * index).take(colCount);
       return Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: List<Widget>.generate(rowItems.length, (index) {
           var item = rowItems.elementAt(index);
           return itemBuilder(context, item);

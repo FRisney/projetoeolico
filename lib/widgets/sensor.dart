@@ -41,57 +41,75 @@ class _SensorDisplayState extends State<SensorDisplay> {
 
   trataSensor() {
     if (updatedValue is String) {
-      return _text();
+      return Text(
+        updatedValue,
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+        textAlign: TextAlign.center,
+      );
     } else if (widget.sensor == 'Potencia AC') {
-      return _void();
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: <InlineSpan>[
+                TextSpan(
+                  text: updatedValue.toString(),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                TextSpan(
+                  text: '\n${widget.unit}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            widget.sensor,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
     } else if (updatedValue is num) {
-      return _gauge();
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          GaugeDisplay(
+            updatedValue: updatedValue,
+            min: widget.min,
+            max: widget.max,
+            unit: widget.unit,
+            fillColor: Colors.grey.shade700,
+            pointerInset: 3.0,
+            pointerLength: 8.0,
+            lineWidths: 3.0,
+          ),
+          const SizedBox(height: 14),
+          Text(
+            widget.sensor,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
     }
     throw Exception('tipo nao suportado');
   }
-
-  _text() => Text(
-        updatedValue,
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-      );
-
-  _void() => GaugeDisplay(
-        updatedValue: updatedValue,
-        min: widget.min,
-        max: widget.max,
-        unit: widget.unit,
-        fillColor: Colors.black.withOpacity(0.0),
-        pointerColor: Colors.black.withOpacity(0.0),
-        bgOpacity: 0.0,
-        shadowOpacity: 0.0,
-      );
-
-  _gauge() => GaugeDisplay(
-        updatedValue: updatedValue,
-        min: widget.min,
-        max: widget.max,
-        unit: widget.unit,
-        fillColor: Colors.grey.shade700,
-      );
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        width: MediaQuery.of(context).size.width / 20 * 7,
+        width: MediaQuery.of(context).size.width / 20 * 8,
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            trataSensor(),
-            const SizedBox(height: 14),
-            Text(widget.sensor),
-          ],
-        ),
+        child: trataSensor(),
       ),
     );
   }

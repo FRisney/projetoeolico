@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../stores/detalhes_grupo.dart';
 import '../widgets/date_display.dart';
@@ -31,12 +31,15 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
         updateOnTimer,
       );
     }
-    getSensors(widget.child).then((value) {
-      if (value == null) return;
-      setState(() {
-        sensores = value;
-      });
-    });
+    sensores = {
+      "HOTEK": {
+        "Vento": {"Unidade": "m/s", "Valor": 0.0},
+        "RPM": {"Unidade": "rpm", "Valor": 0},
+        "Potencia Inst": {"Unidade": "KW", "Valor": 0.0},
+        "Potencia AC": {"Unidade": "KW/h", "Valor": 0.0},
+        "Bateria": {"Unidade": "", "Valor": "Carregando"}
+      }
+    };
     super.initState();
   }
 
@@ -76,7 +79,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
         children: [
           Column(
             children: [
-              const SizedBox(height: 35),
+              // const SizedBox(height: 35),
               Expanded(
                 child: ListView.builder(
                   itemCount: sensores.length,
@@ -108,7 +111,7 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
               ),
             ],
           ),
-          DateDisplay(date: date),
+          // DateDisplay(date: date),
         ],
       ),
     );
