@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../stores/detalhes_grupo.dart';
 import '../widgets/date_display.dart';
 import '../widgets/custom_grid.dart';
 import '../widgets/sensor.dart';
@@ -9,10 +7,7 @@ import '../widgets/sensor.dart';
 class DetalhesGrupoPage extends StatefulWidget {
   const DetalhesGrupoPage({
     Key? key,
-    this.child = '/',
   }) : super(key: key);
-
-  final String child;
 
   @override
   State<DetalhesGrupoPage> createState() => _DetalhesGrupoPageState();
@@ -33,10 +28,10 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
     }
     sensores = {
       "HOTEK": {
-        "Vento": {"Unidade": "m/s", "Valor": 0.0},
-        "RPM": {"Unidade": "rpm", "Valor": 0},
+        "Vento": {"Unidade": "m/s", "Valor": 0.0, "Max": 16},
+        "RPM": {"Unidade": "rpm", "Valor": 0, "Max": 400},
         "Potencia Inst": {"Unidade": "KW", "Valor": 0.0},
-        "Potencia AC": {"Unidade": "KW/h", "Valor": 0.0},
+        "Potencia AC": {"Unidade": "KW/h", "Valor": 0.0, "Max": 32},
         "Bateria": {"Unidade": "", "Valor": "Carregando"}
       }
     };
@@ -65,53 +60,54 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
   Container _titleCard(String grupo, BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
-      child: Text(
-        grupo.toUpperCase(),
-        style: Theme.of(context).textTheme.headlineLarge,
+      child: RichText(
+        text: TextSpan(children: [
+          TextSpan(
+            text: grupo.toUpperCase(),
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          TextSpan(
+            text: ' Aerogeradores',
+            style: Theme.of(context).textTheme.headlineSmall,
+          )
+        ]),
       ),
     );
   }
 
   _main() {
     return Container(
-      margin: const EdgeInsets.only(top: 32.0),
+      margin: const EdgeInsets.only(top: 24.0),
       child: Stack(
         children: [
-          Column(
-            children: [
-              // const SizedBox(height: 35),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: sensores.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final grupo = sensores.entries.elementAt(index);
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _titleCard(grupo.key.toString(), context),
-                        CustomGrid(
-                          grupo: grupo,
-                          items: grupo.value.entries.toList(),
-                          itemBuilder: (_, sensor) {
-                            final sensorValue = sensor.value;
-                            return SensorDisplay(
-                              grupo: grupo.key,
-                              sensor: sensor.key,
-                              initialValue: sensorValue['Valor'],
-                              unit: sensorValue['Unidade'],
-                              max: sensorValue['Max'],
-                              min: sensorValue['Min'],
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
+          ListView.builder(
+            itemCount: sensores.length,
+            itemBuilder: (BuildContext context, int index) {
+              final grupo = sensores.entries.elementAt(index);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _titleCard(grupo.key.toString(), context),
+                  CustomGrid(
+                    grupo: grupo,
+                    items: grupo.value.entries.toList(),
+                    itemBuilder: (_, sensor) {
+                      final sensorValue = sensor.value;
+                      return SensorDisplay(
+                        grupo: grupo.key,
+                        sensor: sensor.key,
+                        initialValue: sensorValue['Valor'],
+                        unit: sensorValue['Unidade'],
+                        max: sensorValue['Max'],
+                        min: sensorValue['Min'],
+                      );
+                    },
+                  ),
+                ]..insert(0, const SizedBox(height: 35)),
+              );
+            },
           ),
-          // DateDisplay(date: date),
+          DateDisplay(date: date),
         ],
       ),
     );

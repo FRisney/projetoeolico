@@ -3,17 +3,17 @@ import 'package:gauge_display/gauge_display.dart';
 import '../stores/detalhes_grupo.dart';
 
 class SensorDisplay extends StatefulWidget {
-  const SensorDisplay(
-      {Key? key,
-      required this.grupo,
-      required this.sensor,
-      required this.initialValue,
-      this.unit,
-      this.max,
-      this.min})
-      : super(key: key);
+  const SensorDisplay({
+    Key? key,
+    required this.grupo,
+    required this.sensor,
+    required this.initialValue,
+    this.unit = '',
+    this.max = 100,
+    this.min = 0,
+  }) : super(key: key);
 
-  final String? unit;
+  final String unit;
   final String grupo;
   final String sensor;
   final dynamic initialValue;
@@ -26,10 +26,16 @@ class SensorDisplay extends StatefulWidget {
 
 class _SensorDisplayState extends State<SensorDisplay> {
   late dynamic updatedValue;
+  late num _min;
+  late num _max;
+  late String _unit;
 
   @override
   void initState() {
     updatedValue = widget.initialValue;
+    _min = widget.min ?? 0;
+    _max = widget.max ?? 100;
+    _unit = widget.unit;
     bindSensor(
       "${widget.grupo}/${widget.sensor}",
       onValueUpdated: _onValueUpdated,
@@ -37,67 +43,88 @@ class _SensorDisplayState extends State<SensorDisplay> {
     super.initState();
   }
 
-  void _onValueUpdated(_, nv) => setState(() => updatedValue = nv['Valor']);
+  void _onValueUpdated(_, nv) {
+    setState(() {
+      updatedValue = nv['Valor'] ?? widget.initialValue;
+      _min = nv['Min'] ?? (widget.min ?? 0);
+      _max = nv['Max'] ?? (widget.max ?? 100);
+      _unit = nv['Unidade'] ?? '';
+    });
+  }
 
   trataSensor() {
     if (updatedValue is String) {
-      return Text(
-        updatedValue,
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-        textAlign: TextAlign.center,
+      return Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width - 72,
+          child: Text(
+            updatedValue,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
     } else if (widget.sensor == 'Potencia AC') {
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: <InlineSpan>[
-                TextSpan(
-                  text: updatedValue.toString(),
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                TextSpan(
-                  text: '\n${widget.unit}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
+      return Container(
+        constraints: BoxConstraints.loose(Size(
+          MediaQuery.of(context).size.height / 5 - 16,
+          MediaQuery.of(context).size.width / 2,
+        )),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(height: 14),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: <InlineSpan>[
+                  TextSpan(
+                    text: updatedValue.toString(),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  TextSpan(
+                    text: '\n${widget.unit}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            widget.sensor,
-            textAlign: TextAlign.center,
-          ),
-        ],
+            const SizedBox(height: 14),
+            Text(
+              widget.sensor,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       );
     } else if (updatedValue is num) {
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          GaugeDisplay(
-            updatedValue: updatedValue,
-            min: widget.min,
-            max: widget.max,
-            unit: widget.unit,
-            fillColor: Colors.grey.shade700,
-            pointerInset: 3.0,
-            pointerLength: 8.0,
-            lineWidths: 3.0,
-          ),
-          const SizedBox(height: 14),
-          Text(
-            widget.sensor,
-            textAlign: TextAlign.center,
-          ),
-        ],
+      return Container(
+        constraints: BoxConstraints.loose(Size(
+          MediaQuery.of(context).size.height / 5 - 16,
+          MediaQuery.of(context).size.width / 2,
+        )),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            GaugeDisplay(
+              updatedValue: updatedValue,
+              min: _min,
+              max: _max,
+              unit: _unit,
+              fillColor: Colors.grey.shade700,
+              useWidth: false,
+            ),
+            const SizedBox(height: 14),
+            Text(
+              widget.sensor,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       );
     }
     throw Exception('tipo nao suportado');
@@ -107,7 +134,6 @@ class _SensorDisplayState extends State<SensorDisplay> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        width: MediaQuery.of(context).size.width / 20 * 8,
         padding: const EdgeInsets.all(16.0),
         child: trataSensor(),
       ),
