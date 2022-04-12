@@ -85,7 +85,6 @@ class _SensorDisplayState extends State<SensorDisplay> {
               pointerColor: Colors.white.withOpacity(0),
               bgOpacity: 0,
               shadowOpacity: 0,
-              useWidth: false,
             ),
             const SizedBox(height: 14),
             Text(
@@ -105,15 +104,19 @@ class _SensorDisplayState extends State<SensorDisplay> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            GaugeDisplay(
-              updatedValue: updatedValue,
-              min: _min,
-              max: _max,
-              unit: _unit,
-              fillColor: Colors.black,
-              pointerColor: Colors.black,
-              pointerInset: 10,
-              useWidth: false,
+            Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: GaugeDisplay(
+                  updatedValue: updatedValue,
+                  min: _min,
+                  max: _max,
+                  unit: _unit,
+                  fillColor: Colors.black,
+                  pointerColor: Colors.black,
+                  pointerInset: 10,
+                ),
+              ),
             ),
             const SizedBox(height: 14),
             Text(
