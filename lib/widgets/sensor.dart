@@ -78,6 +78,7 @@ class _SensorDisplayState extends State<SensorDisplay> {
           children: [
             GaugeDisplay(
               updatedValue: updatedValue,
+              unit: widget.unit,
               min: 0,
               max: 0,
               fillColor: Colors.white.withOpacity(0),
