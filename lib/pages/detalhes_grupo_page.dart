@@ -30,8 +30,8 @@ class _DetalhesGrupoPageState extends State<DetalhesGrupoPage> {
       "HOTEK": {
         "Vento": {"Unidade": "m/s", "Valor": 0.0, "Max": 16},
         "RPM": {"Unidade": "rpm", "Valor": 0, "Max": 400},
-        "Potencia Inst": {"Unidade": "KW", "Valor": 0.0},
-        "Potencia AC": {"Unidade": "KW/h", "Valor": 0.0, "Max": 32},
+        "Potencia Instantanea": {"Unidade": "KW", "Valor": 0.0},
+        "Potencia Acumulada": {"Unidade": "KW/h", "Valor": 0.0, "Max": 32},
         "Bateria": {"Unidade": "", "Valor": "Carregando"}
       }
     };

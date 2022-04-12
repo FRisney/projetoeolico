@@ -66,7 +66,7 @@ class _SensorDisplayState extends State<SensorDisplay> {
           ),
         ),
       );
-    } else if (widget.sensor == 'Potencia AC') {
+    } else if (widget.sensor == 'Potencia Acumulada') {
       return Container(
         constraints: BoxConstraints.loose(Size(
           MediaQuery.of(context).size.height / 5 - 16,
@@ -78,7 +78,7 @@ class _SensorDisplayState extends State<SensorDisplay> {
           children: [
             GaugeDisplay(
               updatedValue: updatedValue,
-              unit: widget.unit,
+              unit: _unit,
               min: 0,
               max: 0,
               fillColor: Colors.white.withOpacity(0),
